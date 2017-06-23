@@ -38,6 +38,7 @@ It shall work as follow pictures, and also [Link](https://pulsgarney.github.io/m
 
 *It can only reaches to 3 different levels of the content navigator or it comes errors.*
 
+Reference I took: [https://github.com/chris-peng/markdown_nav](https://github.com/chris-peng/markdown_nav)
 
 
 # 中文 CN 
@@ -80,5 +81,6 @@ body {
 
 **目錄只能使用到3級目錄，超出3級的話會出錯**
 
+參考項目: [https://github.com/chris-peng/markdown_nav](https://github.com/chris-peng/markdown_nav)
 
 
