@@ -1,0 +1,193 @@
+<!--Baidu JQuery Source 百度JQuery CDN源-->
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+
+<!--Google JQuery Source 谷歌JQuery CDN源-->
+<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>-->
+
+<script>
+	$(document).ready(function() {
+		//设置首H1标题为书名（不参与编号）
+		//Set the first H1 title as Book Name(apart from numbering)
+		var FirstH1BookName = false;
+		$('body').html("<div id=\"md_con\">" + $('body').html() + "</div>");
+		var h1s = $("body").find("h1");
+		var h2s = $("body").find("h2");
+		var h3s = $("body").find("h3");
+		var h4s = $("body").find("h4");
+		var h5s = $("body").find("h5");
+		var h6s = $("body").find("h6");
+		var headCounts = [h1s.length, h2s.length, h3s.length, h4s.length, h5s.length, h6s.length];
+		var vH1Tag = null;
+		var vH2Tag = null;
+		var vH3Tag = null;
+		for(var i = 0; i < headCounts.length; i++) {
+			if(headCounts[i] > 0) {
+				if(vH1Tag == null) {
+					vH1Tag = 'h' + (i + 1);
+				} else if(vH2Tag == null) {
+					vH2Tag = 'h' + (i + 1);
+				} else {
+					vH3Tag = 'h' + (i + 1);
+				}
+			}
+		}
+		if(vH1Tag == null) {
+			return;
+		}
+		$("body").prepend("<div id=\"sum-btn\"></div><div id=\"sum\"></div>");
+		var vH1Index = 0;
+		var vH2Index = 0;
+		var vH3Index = 0;
+		$("body").find("h1, h2, h3, h4, h5, h6").each(function(i, item) {
+			var id = '';
+			var name = '';
+			var tag = $(item).get(0).tagName.toLowerCase();
+			var className = '';
+			if(tag == vH1Tag) {
+				id = name = ++vH1Index;
+				name = id + '.';
+				vH2Index = 0;
+				className = 'item_h1';
+			} else if(tag == vH2Tag) {
+				id = vH1Index + '_' + ++vH2Index;
+				name = vH1Index + '.' + vH2Index + '.';
+				vH3Index = 0;
+				className = 'item_h2';
+			} else if(tag == vH3Tag) {
+				id = vH1Index + '_' + +vH2Index + '_' + ++vH3Index;
+				name = vH1Index + '.' + vH2Index + '.' + vH3Index + '.';
+				className = 'item_h3';
+			}
+			$(item).attr("id", "wow" + id);
+			$(item).addClass("wow_head");
+			if(FirstH1BookName) {
+				$("#sum").append('<li class="sum-li"><a class="nav_item item_title anchor-link" onclick="return false;" href="#" link="#wow' + id + '"><b>' + $(this).text() + '</a></li>');
+				FirstH1BookName = false;
+				vH1Index = 0;
+			} else {
+				$("#sum").append('<li class="sum-li"><a class="nav_item ' + className + ' anchor-link" onclick="return false;" href="#" link="#wow' + id + '"><b>' + name + " </b>" + $(this).text() + '</a></li>');
+			}
+		});
+		$(".anchor-link").click(function() {
+			$("html, body").animate({
+				scrollTop: $($(this).attr("link")).offset().top
+			}, 500);
+		});
+		var headerNavs = $("#sum li .nav_item");
+		var headerTops = [];
+		$(".wow_head").each(function(i, n) {
+			headerTops.push($(n).offset().top);
+		});
+		$(window).scroll(function() {
+			var scrollTop = $(window).scrollTop();
+			$.each(headerTops, function(i, n) {
+				var distance = n - scrollTop;
+				if(distance >= 0) {
+					$("#sum li .nav_item.current").removeClass('current');
+					$(headerNavs[i]).addClass('current');
+					return false;
+				}
+			});
+		});
+		var HideOrShow = true;
+		$('#md_con').width($(window).width() - 421);
+		$('body').append("<div style=\"clear:both;\"></div>");
+		$('#sum-btn').height($(window).height()).click(function() {
+			if(HideOrShow) {
+				$('#sum').animate({
+					width: 0
+				});
+				$('#md_con').animate({
+					marginRight: 150
+				});
+				HideOrShow = false;
+			} else {
+				$('#sum').animate({
+					width: 300
+				});
+				$('#md_con').animate({
+					marginRight: 0
+				});
+				HideOrShow = true;
+			}
+		})
+	});
+</script>
+<style>
+	#sum-btn {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 3px;
+		height: 500px;
+		background: cadetblue;
+		z-index: 500;
+	}
+	
+	#md_con {
+		padding: 20px 40px;
+		display: block;
+		float: right;
+	}
+	
+	#sum {
+		background: #fafafa;
+		white-space: nowrap;
+		width: 300px;
+		position: fixed;
+		left: 0px;
+		top: 0px;
+		bottom: 0px;
+		border-right: 1px solid #eee;
+		display: block;
+		overflow: auto;
+		float: left;
+	}
+	
+	#sum li {
+		font-size: 14px;
+		list-style: none;
+		overflow: hidden;
+	}
+	
+	#sum li .nav_item {
+		padding: 10px;
+	}
+	
+	#sum li .item_title {
+		text-align: center;
+		width: calc(100% - 20px);
+	}
+	
+	#sum li .item_h2 {
+		text-indent: 2em;
+		font-size: 0.8rem;
+	}
+	
+	#sum li .item_h3 {
+		text-indent: 4em;
+		font-size: 0.8rem;
+	}
+	
+	#sum li .nav_item.current {
+		color: black;
+		background-color: #f0f0f0;
+	}
+	
+	#sum li:hover {
+		background: rgba(204, 204, 204, 0.12);
+	}
+	
+	#sum a {
+		display: inline-block;
+		overflow: hidden;
+		width: 100%;
+		height: calc(100% - 20px);
+		color: #364149 !important;
+		text-decoration: none;
+	}
+	
+	.sum-li {
+		height: 40px;
+	}
+</style>
